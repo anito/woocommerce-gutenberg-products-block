@@ -47,6 +47,7 @@ const offlineChequePaymentMethod = {
 	label,
 	content: <Content />,
 	edit: <Edit />,
+	icons: null,
 	canMakePayment: () => true,
 	ariaLabel: label,
 };

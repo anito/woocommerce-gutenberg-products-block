@@ -10,6 +10,7 @@ namespace Automattic\WooCommerce\Blocks\BlockTypes;
 use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\Blocks\Assets;
 use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
+use Automattic\WooCommerce\Blocks\Assets\PaymentMethodAssets;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -98,6 +99,8 @@ class Cart extends AbstractBlock {
 			$this->hydrate_from_api( $data_registry );
 		}
 
+		Package::container()->get( PaymentMethodAssets::class )->register_payment_method_data();
+
 		do_action( 'woocommerce_blocks_cart_enqueue_data' );
 	}
 
@@ -109,8 +112,11 @@ class Cart extends AbstractBlock {
 	 *                           not in the post content on editor load.
 	 */
 	protected function enqueue_scripts( array $attributes = [] ) {
-		Assets::register_block_script( $this->block_name . '-frontend', $this->block_name . '-block-frontend' );
+		$dependencies = Package::container()->get( PaymentMethodAssets::class )->get_all_registered_payment_method_script_handles();
+
+		Assets::register_block_script( $this->block_name . '-frontend', $this->block_name . '-block-frontend', $dependencies );
 	}
+
 
 	/**
 	 * Hydrate the cart block with data from the API.
