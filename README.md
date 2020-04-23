@@ -1,3 +1,8 @@
+# Highligt Special (Unique) Products
+
+- based on Custom Product Metas
+- currently it only works in conjunction with another WP Plugin (Spine App) for configuring the necessary Product Metas
+
 # WooCommerce Product Blocks
 
 [![Latest Tag](https://img.shields.io/github/tag/woocommerce/woocommerce-gutenberg-products-block.svg?style=flat&label=Latest%20Tag)](https://github.com/woocommerce/woocommerce-gutenberg-products-block/releases)
