@@ -9,6 +9,7 @@ export const sharedAttributeBlockTypes = [
 	'woocommerce/product-new',
 	'woocommerce/product-on-sale',
 	'woocommerce/product-top-rated',
+	'woocommerce/product-meta',
 ];
 
 export default {

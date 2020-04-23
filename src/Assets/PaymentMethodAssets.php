@@ -12,7 +12,7 @@ use Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry;
 /**
  * PaymentMethodAssets class.
  *
- * @since $VID:$
+ * @since 2.6.1
  */
 class PaymentMethodAssets {
 

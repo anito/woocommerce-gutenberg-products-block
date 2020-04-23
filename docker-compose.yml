@@ -1,77 +1,74 @@
-version: '3.3'
-
+version: '3.6'
 services:
 
-  db:
-    image: mariadb:10.5
-    restart: on-failure
-    environment:
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
-      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+  wordpress:
+    image: wordpress:${WORDPRESS_VERSION:-latest}
+    container_name: ${COMPOSE_PROJECT_NAME:-wordpress}
     volumes:
-    - db:/var/lib/mysql
-    
-  wordpress-unit-tests:
-    container_name: wordpress_test
-    depends_on:
-      - db
-    build:
-      context: ./tests/bin
-    ports:
-      - 8085:80
-    restart: on-failure
+      - ./config/php.conf.ini:/usr/local/etc/php/7.3/conf.d/uploads.ini
+      - ./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block
+      - ../spine-app:/var/www/html/wp-content/plugins/spine-app
+      - ../log-debug:/var/www/html/wp-content/plugins/log-debug
+      - ${WORDPRESS_DATA_DIR:-./wordpress}:/var/www/html
     environment:
-      WORDPRESS_DB_HOST:
-      WORDPRESS_DB_NAME:
-      WORDPRESS_DB_USER:
-      WORDPRESS_DB_PASSWORD:
-      WORDPRESS_TABLE_PREFIX: wp_test_
-      WP_CORE_DIR: /var/www/html
-      WP_TESTS_DIR: /tmp/wordpress-tests-lib
-    volumes:
-      - './:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block'
-      - wordpress:/var/www/html
-
-  wordpress-www:
-    depends_on:
-      - db
-    build:
-      context: ./bin/docker/wordpress
-    ports:
-      - ${WORDPRESS_PORT}:80
-    restart: on-failure
-    environment:
-      WORDPRESS_DB_HOST:
-      WORDPRESS_DB_NAME:
-      WORDPRESS_DB_USER:
-      WORDPRESS_DB_PASSWORD:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: password
       WORDPRESS_TABLE_PREFIX: wp_
       WORDPRESS_DEBUG: 1
-    volumes:
-      - "./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block"
-      - wordpress:/var/www/html
-
-  wordpress-cli:
     depends_on:
-      - db
-      - wordpress-www
-    build:
-        context: ./bin/docker/wp-cli
-    restart: on-failure
-    environment:
-        WORDPRESS_HOST:
-        WORDPRESS_TITLE:
-        WORDPRESS_LOGIN:
-        WORDPRESS_PASSWORD:
-        WORDPRESS_PORT:
-        WORDPRESS_EMAIL:
-        DOMAIN_NAME:
-    volumes:
-      - ./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block
-      - wordpress:/var/www/html
+      - mysql
+      - phpmyadmin
+    restart: always
+    ports:
+      - ${WORDPRESS_PORT}:80
 
-volumes:
-  db:
-  wordpress:
+  mysql:
+    image: mariadb:${MARIADB_VERSION:-latest}
+    container_name: ${COMPOSE_PROJECT_NAME}_mysql
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD:-password}
+      - MYSQL_USER=${DATABASE_USER:-root}
+      - MYSQL_PASSWORD=${DATABASE_PASSWORD:-password}
+      - MYSQL_DATABASE=${COMPOSE_PROJECT_NAME:-wordpress}
+    restart: always
+
+  phpmyadmin:
+    depends_on:
+      - mysql
+    image: phpmyadmin/phpmyadmin:${PHPMYADMIN_VERSION:-latest}
+    container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
+    restart: always
+    ports:
+      - ${PHPMYADMIN_PORT}:80
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-password}
+
+  # Command line interface to wordpress
+  wpcli:
+    build: ./bin/docker/wpcli/
+    image: wpcli
+    container_name: ${COMPOSE_PROJECT_NAME}_wpcli
+    volumes:
+      - ${WORDPRESS_DATA_DIR:-./wordpress}:/var/www/html
+    working_dir: /var/www/html
+
+# Check availability of essential services
+  healthcheck:
+    image: wpcli
+    build: ./bin/docker/wpcli/
+    container_name: ${COMPOSE_PROJECT_NAME}_healthcheck
+    command: sh -c "/wait"
+    environment:
+      - WAIT_HOSTS=mysql:3306, wordpress:80
+      - WAIT_BEFORE_HOSTS=${WAIT_BEFORE_HOSTS:-30}
+      - WAIT_AFTER_HOSTS=${WAIT_AFTER_HOSTS:-15}
+      - WAIT_HOSTS_TIMEOUT=${WAIT_HOSTS_TIMEOUT:-300}
+      - WAIT_SLEEP_INTERVAL=${WAIT_SLEEP_INTERVAL:-30}
+      - WAIT_HOST_CONNECT_TIMEOUT=${WAIT_HOST_CONNECT_TIMEOUT:-30}
+
+

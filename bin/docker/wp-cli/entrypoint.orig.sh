@@ -16,12 +16,12 @@ chown xfs:xfs /var/www/html/wp-content/plugins
 
 ## switch user
 if [ $UID -eq 0 ]; then
-    user=xfs
-    dir=/var/www/html
-    cd "$dir"
-    exec su -s /bin/bash "$user" "$0" -- "$@"
-    # nothing will be executed beyond that line,
-    # because exec replaces running process with the new one
+  user=xfs
+  dir=/var/www/html
+  cd "$dir"
+  exec su -s /bin/bash "$user" "$0" -- "$@"
+  # nothing will be executed beyond that line,
+  # because exec replaces running process with the new one
 fi
 
 declare -p WORDPRESS_PORT
@@ -47,12 +47,11 @@ else
         --skip-email
 fi
 
-wp theme install storefront --activate
 wp plugin install woocommerce --activate
 wp plugin activate woocommerce-gutenberg-products-block
 wp plugin activate spine-app
 wp plugin activate log-debug
-wp rewrite structure '/blog/%postname%/'
+wp theme install storefront --activate
 wp user create customer customer@woocommercecoree2etestsuite.com --user_pass=password --role=customer --path=/var/www/html
 wp post create --post_type=page --post_status=publish --post_title='Ready' --post_content='E2E-tests.'
 
@@ -64,4 +63,4 @@ if ! [[ ${CURRENT_DOMAIN} == ${URL} ]]; then
 fi
 
 echo "Visit $(wp option get siteurl)"
-# touch /var/www/html/.initialized
+#touch /var/www/html/.initialized

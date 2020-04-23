@@ -135,6 +135,8 @@ class RestApi {
 			'products'                => __NAMESPACE__ . '\RestApi\Controllers\Products',
 			'variations'              => __NAMESPACE__ . '\RestApi\Controllers\Variations',
 			'product-reviews'         => __NAMESPACE__ . '\RestApi\Controllers\ProductReviews',
+			'product-meta'            => __NAMESPACE__ . '\RestApi\Controllers\ProductMetas',
+			'metas'                   => __NAMESPACE__ . '\RestApi\Controllers\Metas',
 		];
 	}
 }

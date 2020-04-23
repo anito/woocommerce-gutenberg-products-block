@@ -4,6 +4,7 @@
 import { getCategories, setCategories } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { woo as Icon } from '@woocommerce/icons';
+import { IconHal } from './components/icons';
 
 /**
  * Internal dependencies
@@ -20,5 +21,14 @@ setCategories( [
 		slug: 'woocommerce',
 		title: __( 'WooCommerce', 'woo-gutenberg-products-block' ),
 		icon: <Icon />,
+	},
+] );
+setCategories( [
+	...getCategories().filter( ( { slug } ) => slug !== 'halehmann' ),
+	// Add a Lehmann GmbH block category
+	{
+		slug: 'halehmann',
+		title: __( 'Lehmann GmbH', 'woo-gutenberg-products-block' ),
+		icon: <IconHal />,
 	},
 ] );

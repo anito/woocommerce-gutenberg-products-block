@@ -75,6 +75,7 @@ class Assets {
 		$payment_method_handles = Package::container()->get( PaymentMethodAssets::class )->get_all_registered_payment_method_script_handles();
 		self::register_script( 'wc-checkout-block', plugins_url( self::get_block_asset_build_path( 'checkout' ), __DIR__ ), array_merge( $block_dependencies, $payment_method_handles ) );
 		self::register_script( 'wc-cart-block', plugins_url( self::get_block_asset_build_path( 'cart' ), __DIR__ ), $block_dependencies );
+		self::register_script( 'wc-product-meta', plugins_url( self::get_block_asset_build_path( 'product-meta' ), __DIR__ ), $block_dependencies );
 	}
 
 	/**
@@ -224,7 +225,7 @@ class Assets {
 	 * Queues a block script.
 	 *
 	 * @since 2.3.0
-	 * @since $VID:$ Changed $name to $script_name and added $handle argument.
+	 * @since 2.6.1 Changed $name to $script_name and added $handle argument.
 	 *
 	 * @param string $script_name  Name of the script used to identify the file inside build folder.
 	 * @param string $handle       Optional. Provided if the handle should be different than the script name. `wc-` prefix automatically added.

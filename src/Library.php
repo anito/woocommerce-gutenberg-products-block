@@ -119,6 +119,7 @@ class Library {
 			'ReviewsByCategory',
 			'ProductSearch',
 			'ProductTag',
+			'ProductMeta',
 		];
 		// @todo after refactoring dynamic block registration, this will be moved
 		// to block level config.

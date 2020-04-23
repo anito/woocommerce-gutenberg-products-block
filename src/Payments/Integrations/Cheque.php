@@ -5,7 +5,7 @@
  * will be moved to the Stripe extension
  *
  * @package WooCommerce/Blocks
- * @since $VID:$
+ * @since 2.6.1
  */
 
 namespace Automattic\WooCommerce\Blocks\Payments\Integrations;
@@ -18,7 +18,7 @@ use Automattic\WooCommerce\Blocks\Assets\Api;
 /**
  * Cheque payment method integration
  *
- * @since $VID:$
+ * @since 2.6.1
  */
 final class Cheque extends AbstractPaymentMethodType {
 	/**
