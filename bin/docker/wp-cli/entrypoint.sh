@@ -49,12 +49,19 @@ fi
 
 wp theme install storefront --activate
 wp plugin install woocommerce --activate
+wp plugin activate elementor
+wp plugin activate elementor-pro
 wp plugin activate woocommerce-gutenberg-products-block
 wp plugin activate spine-app
 wp plugin activate log-debug
 wp rewrite structure '/blog/%postname%/'
-wp user create customer customer@woocommercecoree2etestsuite.com --user_pass=password --role=customer --path=/var/www/html
-wp post create --post_type=page --post_status=publish --post_title='Ready' --post_content='E2E-tests.'
+if [ -f /var/www/html/.ready-post-initialized ]
+then
+    echo "The Ready Post has already been created."
+else
+    wp post create --post_type=page --post_status=publish --post_title='Ready' --post_content='E2E-tests.'
+    touch /var/www/html/.ready-post-initialized
+fi
 
 declare -r CURRENT_DOMAIN=$(wp option get siteurl)
 

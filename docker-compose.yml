@@ -1,74 +1,67 @@
-version: '3.6'
+version: '3.5'
+
 services:
 
-  wordpress:
-    image: wordpress:${WORDPRESS_VERSION:-latest}
-    container_name: ${COMPOSE_PROJECT_NAME:-wordpress}
-    volumes:
-      - ./config/php.conf.ini:/usr/local/etc/php/7.3/conf.d/uploads.ini
-      - ./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block
-      - ../spine-app:/var/www/html/wp-content/plugins/spine-app
-      - ../log-debug:/var/www/html/wp-content/plugins/log-debug
-      - ${WORDPRESS_DATA_DIR:-./wordpress}:/var/www/html
+  db:
+    image: mariadb:10.5
+    container_name: ${COMPOSE_PROJECT_NAME}_mariadb
+    restart: on-failure
     environment:
-      WORDPRESS_DB_HOST: mysql
-      WORDPRESS_DB_NAME: wordpress
-      WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: password
-      WORDPRESS_TABLE_PREFIX: wp_
-      WORDPRESS_DEBUG: 1
+      MYSQL_DATABASE: ${WORDPRESS_DB_NAME}
+      MYSQL_USER: ${WORDPRESS_DB_USER}
+      MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    volumes:
+      - db:/var/lib/mysql
+
+  wordpress-www:
+    image: wordpress-www
+    container_name: ${COMPOSE_PROJECT_NAME}_wordpress-www
     depends_on:
-      - mysql
-      - phpmyadmin
-    restart: always
+      - db
+    build:
+      context: ./bin/docker/wordpress
     ports:
       - ${WORDPRESS_PORT}:80
-
-  mysql:
-    image: mariadb:${MARIADB_VERSION:-latest}
-    container_name: ${COMPOSE_PROJECT_NAME}_mysql
+    restart: on-failure
+    environment:
+      WORDPRESS_DB_HOST:
+      WORDPRESS_DB_NAME:
+      WORDPRESS_DB_USER:
+      WORDPRESS_DB_PASSWORD:
+      WORDPRESS_TABLE_PREFIX: wp_
+      WORDPRESS_DEBUG: 1
     volumes:
-      - ./mysql:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=${DATABASE_PASSWORD:-password}
-      - MYSQL_USER=${DATABASE_USER:-root}
-      - MYSQL_PASSWORD=${DATABASE_PASSWORD:-password}
-      - MYSQL_DATABASE=${COMPOSE_PROJECT_NAME:-wordpress}
-    restart: always
+      - ../elementor/:/var/www/html/wp-content/plugins/elementor
+      - ../elementor-pro/:/var/www/html/wp-content/plugins/elementor-pro
+      - ./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block
+      - ../spine-app/:/var/www/html/wp-content/plugins/spine-app
+      - ../log-debug/:/var/www/html/wp-content/plugins/log-debug
+      - ./wordpress:/var/www/html
 
-  phpmyadmin:
-    depends_on:
-      - mysql
-    image: phpmyadmin/phpmyadmin:${PHPMYADMIN_VERSION:-latest}
-    container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
-    restart: always
-    ports:
-      - ${PHPMYADMIN_PORT}:80
-    environment:
-      PMA_HOST: mysql
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-password}
-
-  # Command line interface to wordpress
-  wpcli:
-    build: ./bin/docker/wpcli/
-    image: wpcli
+  wordpress-cli:
     container_name: ${COMPOSE_PROJECT_NAME}_wpcli
-    volumes:
-      - ${WORDPRESS_DATA_DIR:-./wordpress}:/var/www/html
-    working_dir: /var/www/html
-
-# Check availability of essential services
-  healthcheck:
-    image: wpcli
-    build: ./bin/docker/wpcli/
-    container_name: ${COMPOSE_PROJECT_NAME}_healthcheck
-    command: sh -c "/wait"
+    depends_on:
+      - db
+      - wordpress-www
+    build:
+      context: ./bin/docker/wp-cli
+    restart: on-failure
     environment:
-      - WAIT_HOSTS=mysql:3306, wordpress:80
-      - WAIT_BEFORE_HOSTS=${WAIT_BEFORE_HOSTS:-30}
-      - WAIT_AFTER_HOSTS=${WAIT_AFTER_HOSTS:-15}
-      - WAIT_HOSTS_TIMEOUT=${WAIT_HOSTS_TIMEOUT:-300}
-      - WAIT_SLEEP_INTERVAL=${WAIT_SLEEP_INTERVAL:-30}
-      - WAIT_HOST_CONNECT_TIMEOUT=${WAIT_HOST_CONNECT_TIMEOUT:-30}
+        WORDPRESS_HOST:
+        WORDPRESS_TITLE:
+        WORDPRESS_LOGIN:
+        WORDPRESS_PASSWORD:
+        WORDPRESS_PORT:
+        WORDPRESS_EMAIL:
+        DOMAIN_NAME:
+    volumes:
+      - ../elementor/:/var/www/html/wp-content/plugins/elementor
+      - ../elementor-pro/:/var/www/html/wp-content/plugins/elementor-pro
+      - ./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block
+      - ../spine-app/:/var/www/html/wp-content/plugins/spine-app
+      - ../log-debug/:/var/www/html/wp-content/plugins/log-debug
+      - ./wordpress:/var/www/html
 
-
+volumes:
+  db:
