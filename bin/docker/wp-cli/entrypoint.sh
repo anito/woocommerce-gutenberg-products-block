@@ -48,6 +48,8 @@ else
 fi
 
 wp theme install storefront --activate
+wp language core install de_DE
+wp language core activate de_DE
 wp plugin install woocommerce --activate
 wp plugin activate elementor
 wp plugin activate elementor-pro
