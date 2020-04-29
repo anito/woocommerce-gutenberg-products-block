@@ -34,7 +34,8 @@ import PropTypes from 'prop-types';
 import ErrorPlaceholder from '@woocommerce/block-components/error-placeholder';
 import { withProductMetas } from '@woocommerce/block-hocs';
 import ProductMetaControl from '@woocommerce/block-components/product-meta-control';
-import BlockTitle from '@woocommerce/block-components/block-title';
+import BlockText from '@woocommerce/block-components/block-text';
+
 /**
  * Internal dependencies
  */
@@ -43,7 +44,7 @@ import { dimRatioToClass, getBackgroundImageStyles } from './utils';
 import { getImageSrcFromProduct } from '../../utils/products';
 
 /**
- * Component to handle edit mode of "Featured Product".
+ * Component to handle edit mode of "Special Product".
  */
 const ProductMeta = ( {
 	attributes,
@@ -203,10 +204,21 @@ const ProductMeta = ( {
 							'Geneigte Fußzeile',
 							'woo-gutenberg-products-block'
 						) }
-						checked={ attributes.inclineFooter }
+						checked={ attributes.hasInclineFooter }
 						onChange={
 							// prettier-ignore
-							() => setAttributes( { inclineFooter: ! attributes.inclineFooter } )
+							() => setAttributes( { hasInclineFooter: ! attributes.hasInclineFooter } )
+						}
+					/>
+					<ToggleControl
+						label={ __(
+							'Button hat Rand',
+							'woo-gutenberg-products-block'
+						) }
+						checked={ attributes.hasButtonBorder }
+						onChange={
+							// prettier-ignore
+							() => setAttributes( { hasButtonBorder: ! attributes.hasButtonBorder } )
 						}
 					/>
 				</PanelBody>
@@ -304,7 +316,8 @@ const ProductMeta = ( {
 			{
 				'is-selected': isSelected && attributes.productId !== 'preview',
 				'is-loading': ! product && isLoading,
-				'has-incline-footer': !! attributes.inclineFooter,
+				'has-incline-footer': attributes.hasInclineFooter,
+				'has-button-border': attributes.hasButtonBorder,
 				'is-not-found': ! product && ! isLoading,
 				'has-icon': attributes.showIcon,
 				'has-background-dim': dimRatio !== 0,
@@ -422,71 +435,78 @@ const ProductMeta = ( {
 	const renderButton = () => {
 		const buttonClasses = classnames(
 			'wp-block-button__link',
-			'has-text-color',
 			'is-style-fill'
 		);
 		const buttonStyle = {
 			backgroundColor: 'vivid-green-cyan',
-			borderRadius: '28px',
+			borderRadius: '5px',
 		};
 		const wrapperStyle = {
 			width: '100%',
 		};
-		const buttonTemplate = [
-			[
-				'core/button',
-				{
-					text: __( 'Shop now', 'woo-gutenberg-products-block' ),
-					url: product.permalink,
-					align: 'center',
-				},
-			],
-		];
-		return attributes.productId ? (
+		return attributes.productId === 'preview' ? (
 			<div className="wp-block-button aligncenter" style={ wrapperStyle }>
-				<div className="my-wrapper">
-					<RichText.Content
-						tagName="a"
-						className={ buttonClasses }
-						style={ buttonStyle }
-						value={ attributes.linkText }
-						target={ product.permalink }
-					/>
-				</div>
+				<RichText.Content
+					tagName="a"
+					className={ buttonClasses }
+					href={ product.url }
+					title={ attributes.linkText }
+					style={ buttonStyle }
+					value={ attributes.linkText }
+					target={ product.url }
+				/>
 			</div>
 		) : (
-			<InnerBlocks template={ buttonTemplate } />
+			<InnerBlocks
+				template={ [
+					[
+						'core/button',
+						{
+							text: __(
+								'Shop now',
+								'woo-gutenberg-products-block'
+							),
+							url: product.permalink,
+							align: 'center',
+						},
+					],
+				] }
+				templateLock="all"
+			/>
 		);
-	};
+	}
+
 	const renderHeader = () => {
 		const headerClasses = classnames();
 		const headerStyle = {
-			backgroundColor: 'vivid-green-cyan',
+			backgroundColor: 'transparent',
 			color: '#e5e5e5',
 		};
 		return (
-			<BlockTitle
+			<BlockText
 				className={ headerClasses }
-				style={ headerStyle }
+				tagName={ attributes.tagName }
 				value={ attributes.heading }
 				onChange={ ( value ) => setAttributes( { heading: value } ) }
+				style={ headerStyle }
 			/>
 		);
 	};
 	const renderFooter = () => {
 		const footerClasses = classnames();
 		const footerStyle = {
-			backgroundColor: 'vivid-green-cyan',
+			backgroundColor: 'transparent',
 			color: '#ffffff',
 			textAlign: 'center',
 		};
 		return (
-			<div className="wp-block-footer aligncenter" style={ footerStyle }>
-				<BlockTitle
+			<div className="wp-block-footer aligncenter">
+				<BlockText
 					className={ footerClasses }
-					style={ footerStyle }
+					tagName={ attributes.tagName }
 					value={ attributes.note }
 					onChange={ ( value ) => setAttributes( { note: value } ) }
+					style={ footerStyle }
 				/>
 			</div>
 		);

@@ -30,6 +30,10 @@
 
 	}
 
+	&.has-button-border .wp-block-button__link {
+		border: 4px solid #bfbfbf;
+	}
+
 	&.has-incline-footer .wc-block-product-meta__footer {
 		transform: rotate(-45deg);
 		right: -416px;
@@ -159,7 +163,6 @@
 
 		a {
 			text-decoration: none;
-			border: 4px solid #bfbfbf;
 		}
 	}
 

@@ -3,9 +3,13 @@
  */
 import { getSetting, setSetting } from '@woocommerce/settings';
 
-setSetting( 'min_height', 350 );
+const assetsUrl = getSetting( 'wcBlocksAssetUrl', '' );
+setSetting( 'min_height', 150 );
 setSetting( 'default_height', 222 );
+setSetting( 'image_placeholder', `${assetsUrl}img/placeholder.svg` );
 
-export const MIN_HEIGHT = getSetting( 'min_height', 100 );
-export const MAX_HEIGHT = getSetting( 'max_height', 500 );
-export const DEFAULT_HEIGHT = getSetting( 'default_height', 100 );
+export const MIN_HEIGHT = getSetting( 'min_height' );
+export const MAX_HEIGHT = getSetting( 'max_height' );
+export const DEFAULT_HEIGHT = getSetting( 'default_height' );
+export const DEFAULT_IMG_PLACEHOLDER_SRC = getSetting( 'image_placeholder' );
+

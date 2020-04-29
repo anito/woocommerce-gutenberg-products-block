@@ -86,7 +86,6 @@ class Metas extends WC_REST_Products_Controller {
 	 */
 	public function get_items( $request ) {
 		$this->request = $request;
-		write_log( request );
 		if ( ! class_exists( 'Spine_js_woo' ) ) {
 			return new \WP_Error( 'woocommerce_rest_cannot_view', 'Could not load Metas. Make sure Special Products are activated in Settings' );
 		}

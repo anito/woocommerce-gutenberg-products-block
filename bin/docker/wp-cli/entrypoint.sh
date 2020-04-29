@@ -47,9 +47,9 @@ else
         --skip-email
 fi
 
-wp theme install storefront --activate
+wp theme install twentytwenty --activate
 wp language core install de_DE
-wp language core activate de_DE
+wp site switch-language de_DE
 wp plugin install woocommerce --activate
 wp plugin activate elementor
 wp plugin activate elementor-pro

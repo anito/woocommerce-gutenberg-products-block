@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * FeaturedProduct class.
  */
-class ProductMeta extends AbstractProductMetaGrid {
+class ProductMeta extends AbstractDynamicBlock {
 	/**
 	 * Block name.
 	 *
@@ -26,17 +26,18 @@ class ProductMeta extends AbstractProductMetaGrid {
 	 * @var array
 	 */
 	protected $defaults = array(
-		'align'        => 'none',
-		'contentAlign' => 'center',
-		'dimRatio'     => 90,
-		'focalPoint'   => false,
-		'height'       => false,
-		'mediaId'      => 0,
-		'mediaSrc'     => '',
-		'iconId'       => 0,
-		'iconSrc'      => '',
-		'showDesc'     => true,
-		'showPrice'    => true,
+		'align'              => 'none',
+		'contentAlign'       => 'center',
+		'dimRatio'           => 50,
+		'focalPoint'         => false,
+		'height'             => false,
+		'mediaId'            => 0,
+		'mediaSrc'           => '',
+		'iconId'             => 0,
+		'showDesc'           => false,
+		'showPrice'          => true,
+		'hasInclineFooter'   => false,
+		'hasButtonBorder'    => false,
 	);
 
 	/**
@@ -57,7 +58,8 @@ class ProductMeta extends AbstractProductMetaGrid {
 			parent::get_attributes(),
 			array(
 				'className' => $this->get_schema_string(),
-				'orderby'   => $this->get_schema_orderby(),
+				'iconSrc'   => $this->get_schema_string( plugins_url( 'assets', dirname( dirname( __FILE__ ) ) ) . '/img/placeholder.svg' ),
+
 			)
 		);
 	}
@@ -106,12 +108,13 @@ class ProductMeta extends AbstractProductMetaGrid {
 						<div>%1$s</div>
 					</div>
 					<div>
-						<img src="%2$s" alt="icon" />
+						<img src="%2$s" alt="icon" data-src=%3$s />
 					</div>
 				</div>
 			</div>',
 			wp_kses_post( $header ),
-			esc_url( $attributes['iconSrc'] )
+			esc_url( $attributes['iconSrc'] ),
+			'test'
 		);
 
 		$title = sprintf(
@@ -153,13 +156,6 @@ class ProductMeta extends AbstractProductMetaGrid {
 			$output .= $price_str;
 		}
 
-		$content = sprintf(
-			'<div class="wp-block-button aligncenter">
-				<a class="wp-block-button__link has-text-color" href="%1$s">%2$s</a>
-			</div>',
-			esc_url( $product->get_permalink() ),
-			wp_kses_post( $attributes['linkText'] )
-		);
 		$output .= '<div class="wc-block-product-meta__link">' . $content . '</div>';
 		$output .= $note_str;
 		$output .= '</div>';
@@ -224,8 +220,12 @@ class ProductMeta extends AbstractProductMetaGrid {
 			$classes[] = "align{$attributes['align']}";
 		}
 
-		if ( isset( $attributes['inclineFooter'] ) && ( 0 !== $attributes['inclineFooter'] ) ) {
+		if ( $attributes['hasInclineFooter'] ) {
 			$classes[] = 'has-incline-footer';
+		}
+
+		if ( $attributes['hasButtonBorder'] ) {
+			$classes[] = 'has-button-border';
 		}
 
 		if ( isset( $attributes['dimRatio'] ) && ( 0 !== $attributes['dimRatio'] ) ) {

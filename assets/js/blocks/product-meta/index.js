@@ -8,7 +8,7 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import { DEFAULT_HEIGHT } from '../../custom-settings';
+import { DEFAULT_HEIGHT, DEFAULT_IMG_PLACEHOLDER_SRC } from '../../custom-settings';
 
 /**
  * Internal dependencies
@@ -19,7 +19,7 @@ import { example } from './example';
 import Block from './block';
 
 /**
- * Register and run the "Featured Product" block.
+ * Register and run the "Special Product" block.
  */
 registerBlockType( 'woocommerce/product-meta', {
 	title: __( 'Special Product', 'woo-gutenberg-products-block' ),
@@ -39,7 +39,12 @@ registerBlockType( 'woocommerce/product-meta', {
 	},
 	example,
 	attributes: {
-		inclineFooter: {
+		hasInclineFooter: {
+			type: 'boolean',
+			default: false,
+		},
+
+		hasButtonBorder: {
 			type: 'boolean',
 			default: false,
 		},
@@ -48,9 +53,9 @@ registerBlockType( 'woocommerce/product-meta', {
 			type: 'string',
 		},
 
-		headingLevel: {
-			type: 'number',
-			default: 5,
+		tagName: {
+			type: 'string',
+			default: 'div',
 		},
 
 		heading: {
@@ -191,8 +196,7 @@ registerBlockType( 'woocommerce/product-meta', {
 		 */
 		iconSrc: {
 			type: 'string',
-			default:
-				'/wp-content/plugins/woocommerce-gutenberg-products-block/assets/img/placeholder.svg',
+			default: DEFAULT_IMG_PLACEHOLDER_SRC,
 		},
 
 		/**

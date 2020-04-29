@@ -4,11 +4,11 @@
 import { getCategories, setCategories } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { woo as Icon } from '@woocommerce/icons';
-import { IconHal } from './components/icons';
 
 /**
  * Internal dependencies
  */
+import { IconHal } from './components/icons';
 import '../css/editor.scss';
 import '../css/style.scss';
 import './filters/block-list-block';

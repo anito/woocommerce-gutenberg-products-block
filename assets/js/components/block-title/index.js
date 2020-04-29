@@ -10,7 +10,7 @@ import classnames from 'classnames';
  */
 import './editor.scss';
 
-const BlockTitle = ( { className, headingLevel, onChange, heading } ) => {
+const BlockTitle = ( { className, headingLevel, onChange, heading, style } ) => {
 	const TagName = `h${ headingLevel }`;
 	return (
 		<TagName>
@@ -21,6 +21,7 @@ const BlockTitle = ( { className, headingLevel, onChange, heading } ) => {
 				) }
 				value={ heading }
 				onChange={ onChange }
+				style={ style }
 			/>
 		</TagName>
 	);
