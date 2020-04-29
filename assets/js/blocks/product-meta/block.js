@@ -474,7 +474,7 @@ const ProductMeta = ( {
 				templateLock="all"
 			/>
 		);
-	}
+	};
 
 	const renderHeader = () => {
 		const headerClasses = classnames();
