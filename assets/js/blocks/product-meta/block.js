@@ -34,7 +34,7 @@ import PropTypes from 'prop-types';
 import ErrorPlaceholder from '@woocommerce/block-components/error-placeholder';
 import { withProductMetas } from '@woocommerce/block-hocs';
 import ProductMetaControl from '@woocommerce/block-components/product-meta-control';
-import BlockText from '@woocommerce/block-components/block-text';
+import { PlainText } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -483,7 +483,7 @@ const ProductMeta = ( {
 			color: '#e5e5e5',
 		};
 		return (
-			<BlockText
+			<PlainText
 				className={ headerClasses }
 				tagName={ attributes.tagName }
 				value={ attributes.heading }
@@ -501,7 +501,7 @@ const ProductMeta = ( {
 		};
 		return (
 			<div className="wp-block-footer aligncenter">
-				<BlockText
+				<PlainText
 					className={ footerClasses }
 					tagName={ attributes.tagName }
 					value={ attributes.note }
