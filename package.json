@@ -37,6 +37,7 @@
 		"docker:build": "docker-compose up --build",
 		"docker:volumes": "docker volume ls",
 		"docker:images": "docker image ls",
+		"docker:ps": "docker ps",
 		"docker:image:remove": "docker image rm",
 		"docker:volume:prune": "docker volume prune",
 		"docker:image:prune": "docker image prune",

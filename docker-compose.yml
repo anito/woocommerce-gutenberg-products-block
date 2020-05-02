@@ -10,7 +10,7 @@ services:
       MYSQL_DATABASE: ${WORDPRESS_DB_NAME}
       MYSQL_USER: ${WORDPRESS_DB_USER}
       MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD}
-      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: ${WORDPRESS_DB_PASSWORD}
     volumes:
       - db:/var/lib/mysql
 
@@ -32,11 +32,11 @@ services:
       WORDPRESS_TABLE_PREFIX: wp_
       WORDPRESS_DEBUG: 1
     volumes:
-      - ../elementor/:/var/www/html/wp-content/plugins/elementor
-      - ../elementor-pro/:/var/www/html/wp-content/plugins/elementor-pro
+      - ../../plugins/elementor/:/var/www/html/wp-content/plugins/elementor
+      - ../../plugins/elementor-pro/:/var/www/html/wp-content/plugins/elementor-pro
       - ./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block
-      - ../spine-app/:/var/www/html/wp-content/plugins/spine-app
-      - ../log-debug/:/var/www/html/wp-content/plugins/log-debug
+      - ../../plugins/spine-app/:/var/www/html/wp-content/plugins/spine-app
+      - ../../plugins/log-debug/:/var/www/html/wp-content/plugins/log-debug
       - ./wordpress:/var/www/html
 
   wordpress-cli:
@@ -56,11 +56,11 @@ services:
         WORDPRESS_EMAIL:
         DOMAIN_NAME:
     volumes:
-      - ../elementor/:/var/www/html/wp-content/plugins/elementor
-      - ../elementor-pro/:/var/www/html/wp-content/plugins/elementor-pro
+      - ../../plugins/elementor/:/var/www/html/wp-content/plugins/elementor
+      - ../../plugins/elementor-pro/:/var/www/html/wp-content/plugins/elementor-pro
       - ./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block
-      - ../spine-app/:/var/www/html/wp-content/plugins/spine-app
-      - ../log-debug/:/var/www/html/wp-content/plugins/log-debug
+      - ../../plugins/spine-app/:/var/www/html/wp-content/plugins/spine-app
+      - ../../plugins/log-debug/:/var/www/html/wp-content/plugins/log-debug
       - ./wordpress:/var/www/html
 
 volumes:

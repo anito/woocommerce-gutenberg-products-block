@@ -54,3 +54,4 @@ blocks.ini
 /wordpress/
 /mysql/
 /db/
+*.code-workspace
