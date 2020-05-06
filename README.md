@@ -1,7 +1,7 @@
-# Highligt Special (Unique) Products
+# Highligt Action (Unique) Products
 
 - based on Custom Product Metas
-- currently this block depends on [Spine App](https://github.com/anito/spine-app) Plugin to configure Product Metas
+- currently this block depends on [Spine App](https://github.com/anito/spine-app) Plugin to configure Custom Product Metas
 
 ## Screenshots
 
