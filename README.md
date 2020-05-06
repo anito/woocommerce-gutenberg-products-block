@@ -1,5 +1,10 @@
 # Highligt Action (Unique) Products
 
+## Purpose
+
+- presenting single products (one per custom meta) as e.g "Product of the Day"
+
+## Notes
 - based on Custom Product Metas
 - currently this block depends on [Spine App](https://github.com/anito/spine-app) Plugin to configure Custom Product Metas
 
