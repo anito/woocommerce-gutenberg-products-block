@@ -3,6 +3,10 @@
 - based on Custom Product Metas
 - currently this block depends on [Spine App](https://github.com/anito/spine-app) Plugin to configure Product Metas
 
+## Screenshots
+
+![View](https://lh3.googleusercontent.com/gtF1df8Tg8lRBzn8WUcdXbYeVqNZfhN1gNkZf7-W366XvMOxKFf1vGrYUa-mcRrrj5JtASSMikGuFHiiUcmR6KagAAng6famrgcHrxg1k54NCTpnrS2Z7fxItZmCNTSa7rzcDv8Gto0=w843-h621-no)
+
 # WooCommerce Product Blocks
 
 [![Latest Tag](https://img.shields.io/github/tag/woocommerce/woocommerce-gutenberg-products-block.svg?style=flat&label=Latest%20Tag)](https://github.com/woocommerce/woocommerce-gutenberg-products-block/releases)
