@@ -1,7 +1,7 @@
 # Highligt Special (Unique) Products
 
 - based on Custom Product Metas
-- currently it only works in conjunction with another WP Plugin [Spine App](https://github.com/anito/spine-app) for configuring the necessary Product Metas
+- currently this block depends on [Spine App](https://github.com/anito/spine-app) Plugin to configure Product Metas
 
 # WooCommerce Product Blocks
 
