@@ -1,4 +1,4 @@
-=== WooCommerce Blocks === test
+=== WooCommerce Blocks ===
 Contributors: automattic, claudiulodro, tiagonoronha, jameskoster, ryelle, levinmedia, aljullu, mikejolley, nerrad, joshuawold, assassinateur, haszari
 Tags: gutenberg, woocommerce, woo commerce, products, blocks, woocommerce blocks
 Requires at least: 5.0
