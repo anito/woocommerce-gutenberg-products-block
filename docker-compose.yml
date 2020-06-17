@@ -32,11 +32,11 @@ services:
       WORDPRESS_TABLE_PREFIX: wp_
       WORDPRESS_DEBUG: 1
     volumes:
-      - ../../plugins/elementor/:/var/www/html/wp-content/plugins/elementor
-      - ../../plugins/elementor-pro/:/var/www/html/wp-content/plugins/elementor-pro
+      - ../elementor/:/var/www/html/wp-content/plugins/elementor
+      - ../elementor-pro/:/var/www/html/wp-content/plugins/elementor-pro
       - ./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block
-      - ../../plugins/spine-app/:/var/www/html/wp-content/plugins/spine-app
-      - ../../plugins/log-debug/:/var/www/html/wp-content/plugins/log-debug
+      - ../spine-app/:/var/www/html/wp-content/plugins/spine-app
+      - ../log-debug/:/var/www/html/wp-content/plugins/log-debug
       - ./wordpress:/var/www/html
 
   wordpress-cli:
@@ -44,23 +44,22 @@ services:
     depends_on:
       - db
       - wordpress-www
-    build:
-      context: ./bin/docker/wp-cli
+    build: ./bin/docker/wp-cli
     restart: on-failure
     environment:
         WORDPRESS_HOST:
-        WORDPRESS_TITLE:
+        WORDPRESS_TITLE: ${WORDPRESS_TITLE}
         WORDPRESS_LOGIN:
         WORDPRESS_PASSWORD:
         WORDPRESS_PORT:
         WORDPRESS_EMAIL:
         DOMAIN_NAME:
     volumes:
-      - ../../plugins/elementor/:/var/www/html/wp-content/plugins/elementor
-      - ../../plugins/elementor-pro/:/var/www/html/wp-content/plugins/elementor-pro
+      - ../elementor/:/var/www/html/wp-content/plugins/elementor
+      - ../elementor-pro/:/var/www/html/wp-content/plugins/elementor-pro
       - ./:/var/www/html/wp-content/plugins/woocommerce-gutenberg-products-block
-      - ../../plugins/spine-app/:/var/www/html/wp-content/plugins/spine-app
-      - ../../plugins/log-debug/:/var/www/html/wp-content/plugins/log-debug
+      - ../spine-app/:/var/www/html/wp-content/plugins/spine-app
+      - ../log-debug/:/var/www/html/wp-content/plugins/log-debug
       - ./wordpress:/var/www/html
 
 volumes:
