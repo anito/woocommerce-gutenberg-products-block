@@ -258,6 +258,11 @@
 		z-index: 1;
 	}
 
+	&.has-radial-background::before  {
+		background-image: radial-gradient(ellipse at 0%, transparent 50%, #000), radial-gradient(ellipse at 100%, transparent 40%, #000);
+		background-color: transparent;
+	}
+
 	@for $i from 1 through 10 {
 		&.has-background-dim.has-background-dim-#{ $i * 10 }::before {
 			opacity: $i * 0.1;
